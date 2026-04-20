@@ -220,7 +220,13 @@ function buildEmploymentHistory(resumeData: ResumeData): Paragraph[] {
         }));
       }
 
-      job.responsibilities?.filter(r => r.trim()).forEach(r => paragraphs.push(bulletPara(r)));
+      if (job.responsibilities?.filter(r => r.trim()).length) {
+        paragraphs.push(new Paragraph({
+          alignment: AlignmentType.JUSTIFIED, spacing: bodySpacing,
+          children: [new TextRun({ text: 'Responsibilities', bold: true, font: 'Calibri', size: 22 })],
+        }));
+        job.responsibilities.filter(r => r.trim()).forEach(r => paragraphs.push(bulletPara(r)));
+      }
 
       if (job.projects?.length) {
         job.projects.forEach((project, pi) => {

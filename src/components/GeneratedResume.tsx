@@ -208,9 +208,12 @@ const GeneratedResume = React.forwardRef<HTMLDivElement, GeneratedResumeProps>(
                       {job.description && <p className="my-2 text-gray-800">{job.description}</p>}
 
                       {job.responsibilities?.length > 0 && (
-                        <ul className="list-disc pl-5 space-y-1 mt-2">
-                          {job.responsibilities.map((r, j) => <li key={j} className="text-gray-800">{stripBullet(r)}</li>)}
-                        </ul>
+                        <div className="mt-2">
+                          <p className="font-semibold text-gray-700 text-sm mb-1">Responsibilities</p>
+                          <ul className="list-disc pl-5 space-y-1">
+                            {job.responsibilities.map((r, j) => <li key={j} className="text-gray-800">{stripBullet(r)}</li>)}
+                          </ul>
+                        </div>
                       )}
 
                       {job.projects && job.projects.length > 0 && (
