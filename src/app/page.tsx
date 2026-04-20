@@ -252,18 +252,15 @@ export default function Home() {
               </div>
             )}
 
-            {/*
-              Preview tab — GeneratedResume stays mounted even when hidden
-              so its triggerResumeDownload event listener remains active.
-            */}
-            <div className={activeTab === 'preview' ? '' : 'hidden'}>
+            {/* Preview tab */}
+            {activeTab === 'preview' && (
               <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
                 <GeneratedResume resumeData={resumeData} previewMode />
               </div>
-            </div>
+            )}
 
             {/* ── State selector & Download (always visible in edit step) ── */}
-            <StateSelector candidateName={resumeData.name || undefined} />
+            <StateSelector resumeData={resumeData} />
           </div>
         )}
       </main>

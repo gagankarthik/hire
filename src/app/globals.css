@@ -5,6 +5,12 @@
   --color-ocean-blue: #0b6cb5;
   --color-ocean-light: #e8f0fe;
   --animate-slide-up: slide-up 0.3s ease-out;
+  --animate-fade-in: fade-in 0.15s ease-out;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 @keyframes slide-up {
