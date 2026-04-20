@@ -118,7 +118,13 @@ export default function Home() {
 
     try {
       const res = await fetch('/api/parse-resume', { method: 'POST', body: formData });
-      const data = await res.json() as ResumeData & { error?: string };
+
+      let data: ResumeData & { error?: string };
+      try {
+        data = await res.json() as ResumeData & { error?: string };
+      } catch {
+        throw new Error(`Server error (${res.status}). Please try again.`);
+      }
 
       if (!res.ok || data.error) {
         throw new Error(data.error ?? 'Parsing failed. Please try again.');

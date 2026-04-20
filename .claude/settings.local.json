@@ -5,7 +5,13 @@
       "Bash(node -e \"const d = require\\('docx'\\); console.log\\(Object.keys\\(d\\).filter\\(k => ['HeightRule','LineRuleType','LevelFormat','ShadingType','TabStopType','VerticalAlign'].includes\\(k\\)\\).join\\(', '\\)\\)\")",
       "Bash(npx tsc *)",
       "Bash(node -e \"const d = require\\('pdf-parse'\\); console.log\\(typeof d, typeof d.default\\)\")",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(node -e \"require\\('pdf-parse'\\)\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/api/parse-resume)",
+      "Bash(node -e ' *)",
+      "Bash(node -e \"const d=require\\('/dev/stdin'\\);console.log\\('main:',d.main,'exports:',JSON.stringify\\(d.exports\\).slice\\(0,200\\)\\)\")",
+      "Bash(node -e \"const p=JSON.parse\\(require\\('fs'\\).readFileSync\\('node_modules/pdf-parse/package.json','utf8'\\)\\);console.log\\('version:',p.version,'main:',p.main,'exports:',JSON.stringify\\(p.exports||'none'\\).slice\\(0,300\\)\\)\")",
+      "Bash(node *)"
     ]
   }
 }
