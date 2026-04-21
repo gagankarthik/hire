@@ -7,7 +7,7 @@ import { saveAs } from 'file-saver';
 import type { ResumeData, EmploymentEntry } from '@/lib/types';
 import {
   stripBullet, normalizeMonthAbbr, splitBulletItems,
-  sortEducation, formatEmploymentLocation, getEducationCountry, formatProjectTitle,
+  sortEducation, mapDegreeToAbbr, formatEmploymentLocation, getEducationCountry, formatProjectTitle,
 } from '@/formatters/shared/utils';
 
 // ── Table border preset ───────────────────────────────────────────────────────
@@ -49,7 +49,7 @@ function buildEducationTable(resumeData: ResumeData): Table {
         height: { value: 58, rule: HeightRule.ATLEAST },
         cantSplit: true,
         children: [
-          dataCell(edu.degree), dataCell(edu.areaOfStudy), dataCell(edu.school),
+          dataCell(mapDegreeToAbbr(edu.degree)), dataCell(edu.areaOfStudy), dataCell(edu.school),
           dataCell(getEducationCountry(edu.location)),
           dataCell(edu.wasAwarded ? 'Yes' : 'No'),
           dataCell(edu.date),

@@ -52,6 +52,14 @@ export const sortEducation = (education: EducationEntry[] = []) =>
     .sort((a, b) => a.rank - b.rank || a.index - b.index)
     .map(({ edu }) => edu);
 
+export const mapDegreeToAbbr = (degree = ''): string => {
+  const normalized = normalizeDegree(degree);
+  const compact = normalized.replace(/\s+/g, '');
+  if (/\b(BA|BS|BSC|BACHELOR|BE)\b/.test(normalized) || /BTECH/.test(compact)) return 'BS';
+  if (/\b(MA|MS|MBA|MASTER)\b/.test(normalized) || /MTECH/.test(compact)) return 'MS';
+  return degree;
+};
+
 // ── Location helpers ──────────────────────────────────────────────────────────
 
 export const INDIA_STATES = new Set([
