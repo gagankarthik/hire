@@ -7,7 +7,7 @@ import { saveAs } from 'file-saver';
 import type { ResumeData, EmploymentEntry } from '@/lib/types';
 import {
   stripBullet, normalizeMonthAbbr, splitBulletItems,
-  sortEducation, mapDegreeToAbbr, formatEmploymentLocation, getEducationCountry, formatProjectTitle,
+  sortEducation, mapDegreeToAbbr, formatEmploymentLocation, getEducationCountry, formatProjectParts,
 } from '@/formatters/shared/utils';
 
 // ── Table border preset ───────────────────────────────────────────────────────
@@ -230,14 +230,20 @@ function buildEmploymentHistory(resumeData: ResumeData): Paragraph[] {
 
       if (job.projects?.length) {
         job.projects.forEach((project, pi) => {
-          const title = formatProjectTitle(
+          const { prefix, name } = formatProjectParts(
             { ...project, projectLocation: project.projectLocation ?? job.location ?? '' },
             pi,
             job.projects!.length,
           );
+          if (prefix) {
+            paragraphs.push(new Paragraph({
+              alignment: AlignmentType.JUSTIFIED, spacing: bodySpacing,
+              children: [new TextRun({ text: prefix, bold: true, font: 'Calibri', size: 22 })],
+            }));
+          }
           paragraphs.push(new Paragraph({
             alignment: AlignmentType.JUSTIFIED, spacing: bodySpacing,
-            children: [new TextRun({ text: title, bold: true, font: 'Calibri', size: 22 })],
+            children: [new TextRun({ text: name, bold: true, font: 'Calibri', size: 22 })],
           }));
           if (project.projectResponsibilities?.length) {
             paragraphs.push(new Paragraph({

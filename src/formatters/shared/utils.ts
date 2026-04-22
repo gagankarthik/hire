@@ -9,7 +9,8 @@ export const escapeRegExp = (value = '') =>
 export const stripBullet = (text = '') =>
   text.replace(/^[\u2022\u25CF\u25E6\u2023\u2043\u2219\u00B7\u25CB\u25AA\u25B8\-\u2013\u2014*]\s*/, '').trim();
 
-/** Normalise partial/variant month abbreviations to standard 3-letter form. */
+/** Normalise partial/variant month abbreviations to standard 3-letter form.
+ *  Also normalises "present" / "current" → "Till date". */
 export const normalizeMonthAbbr = (dateStr = '') => {
   if (!dateStr || typeof dateStr !== 'string') return dateStr;
   const map: Record<string, string> = {
@@ -18,10 +19,12 @@ export const normalizeMonthAbbr = (dateStr = '') => {
     september: 'Sep', october: 'Oct', november: 'Nov', december: 'Dec',
     sept: 'Sep', octo: 'Oct',
   };
-  return dateStr.replace(
-    /\b(january|february|march|april|june|july|august|september|october|november|december|sept|octo)\b/gi,
-    m => map[m.toLowerCase()] ?? m,
-  );
+  return dateStr
+    .replace(
+      /\b(january|february|march|april|june|july|august|september|october|november|december|sept|octo)\b/gi,
+      m => map[m.toLowerCase()] ?? m,
+    )
+    .replace(/\b(present|current)\b/gi, 'Till date');
 };
 
 /** Split a string on inline "•" separators into individual items. */
@@ -136,11 +139,13 @@ export const getEducationCountry = (location = ''): string => {
 const MONTH_PATTERN =
   '(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)';
 
-export const formatProjectTitle = (
+/** Returns the numbered prefix ("Project 1:") and cleaned project name separately.
+ *  When there is only one project, prefix is an empty string. */
+export const formatProjectParts = (
   project: Project & { projectLocation?: string },
   index: number,
   totalProjects: number,
-): string => {
+): { prefix: string; name: string } => {
   const rawName =
     (typeof project.projectName === 'string' && project.projectName) ||
     (typeof project.title === 'string' && project.title) ||
@@ -174,6 +179,16 @@ export const formatProjectTitle = (
     .replace(/^[-–—,:|()\s]+|[-–—,:|()\s]+$/g, '')
     .trim();
 
-  const baseName = cleanName || (rawName.trim().length > 0 ? rawName.trim().slice(0, 60) : 'Project');
-  return totalProjects > 1 ? `Project ${index + 1}: ${baseName}` : baseName;
+  const name = cleanName || (rawName.trim().length > 0 ? rawName.trim().slice(0, 60) : 'Project');
+  const prefix = totalProjects > 1 ? `Project ${index + 1}:` : '';
+  return { prefix, name };
+};
+
+export const formatProjectTitle = (
+  project: Project & { projectLocation?: string },
+  index: number,
+  totalProjects: number,
+): string => {
+  const { prefix, name } = formatProjectParts(project, index, totalProjects);
+  return prefix ? `${prefix} ${name}` : name;
 };

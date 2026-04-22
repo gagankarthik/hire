@@ -5,7 +5,7 @@ import { FiDownload, FiPrinter } from 'react-icons/fi';
 import type { ResumeData } from '@/lib/types';
 import {
   stripBullet, normalizeMonthAbbr, splitBulletItems,
-  sortEducation, formatEmploymentLocation, getEducationCountry, formatProjectTitle,
+  sortEducation, formatEmploymentLocation, getEducationCountry, formatProjectParts,
 } from '@/formatters/shared/utils';
 import StateDownloadDialog from './StateDownloadDialog';
 
@@ -219,24 +219,28 @@ const GeneratedResume = React.forwardRef<HTMLDivElement, GeneratedResumeProps>(
                       {job.projects && job.projects.length > 0 && (
                         <div className="mt-3">
                           {job.projects.map((proj, pi) => {
-                            const title = formatProjectTitle(
+                            const { prefix, name } = formatProjectParts(
                               { ...proj, projectLocation: proj.projectLocation ?? job.location ?? '' },
                               pi, job.projects!.length,
                             );
                             return (
                               <div key={pi} className="border-l-2 border-blue-200 pl-4 mb-3 bg-blue-50 p-3 rounded">
-                                <h5 className="font-semibold text-blue-900 mb-1">{title}</h5>
+                                {prefix && <p className="font-semibold text-blue-900 text-sm">{prefix}</p>}
+                                <h5 className="font-semibold text-blue-900 mb-1">{name}</h5>
                                 {proj.keyTechnologies && (
                                   <p className="text-sm text-gray-600 mb-2">
                                     <span className="font-medium">Technologies: </span>{proj.keyTechnologies}
                                   </p>
                                 )}
                                 {proj.projectResponsibilities?.length > 0 && (
-                                  <ul className="list-disc pl-5 space-y-1">
-                                    {proj.projectResponsibilities.map((r, ri) => (
-                                      <li key={ri} className="text-gray-800 text-sm">{stripBullet(r)}</li>
-                                    ))}
-                                  </ul>
+                                  <>
+                                    <p className="font-semibold text-gray-700 text-sm mb-1">Responsibilities</p>
+                                    <ul className="list-disc pl-5 space-y-1">
+                                      {proj.projectResponsibilities.map((r, ri) => (
+                                        <li key={ri} className="text-gray-800 text-sm">{stripBullet(r)}</li>
+                                      ))}
+                                    </ul>
+                                  </>
                                 )}
                               </div>
                             );
